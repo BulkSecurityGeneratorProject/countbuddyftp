@@ -1,0 +1,8 @@
+entity FileCatalog{
+     path String required
+	 processed Boolean
+	 deleted Boolean
+	 insert Instant
+	 processFinishDate Instant
+	 deviceId String
+}

@@ -1,0 +1,39 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "path",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "processed",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "deleted",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "insert",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "processFinishDate",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "deviceId",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20191218214932",
+    "entityTableName": "file_catalog",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}
