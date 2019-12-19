@@ -1,21 +1,10 @@
 package com.mastertek.web.rest;
 
-import static com.mastertek.web.rest.TestUtil.createFormattingConversionService;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.mastertek.FtpcountbuddyApp;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-
-import javax.persistence.EntityManager;
+import com.mastertek.domain.FileCatalog;
+import com.mastertek.repository.FileCatalogRepository;
+import com.mastertek.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,10 +20,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mastertek.FtpcountbuddyApp;
-import com.mastertek.domain.FileCatalog;
-import com.mastertek.repository.FileCatalogRepository;
-import com.mastertek.web.rest.errors.ExceptionTranslator;
+import javax.persistence.EntityManager;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+
+import static com.mastertek.web.rest.TestUtil.createFormattingConversionService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Test class for the FileCatalogResource REST controller.
@@ -62,6 +57,9 @@ public class FileCatalogResourceIntTest {
 
     private static final String DEFAULT_DEVICE_ID = "AAAAAAAAAA";
     private static final String UPDATED_DEVICE_ID = "BBBBBBBBBB";
+
+    private static final String DEFAULT_UUID = "AAAAAAAAAA";
+    private static final String UPDATED_UUID = "BBBBBBBBBB";
 
     @Autowired
     private FileCatalogRepository fileCatalogRepository;
@@ -106,7 +104,8 @@ public class FileCatalogResourceIntTest {
             .deleted(DEFAULT_DELETED)
             .insert(DEFAULT_INSERT)
             .processFinishDate(DEFAULT_PROCESS_FINISH_DATE)
-            .deviceId(DEFAULT_DEVICE_ID);
+            .deviceId(DEFAULT_DEVICE_ID)
+            .uuid(DEFAULT_UUID);
         return fileCatalog;
     }
 
@@ -136,6 +135,7 @@ public class FileCatalogResourceIntTest {
         assertThat(testFileCatalog.getInsert()).isEqualTo(DEFAULT_INSERT);
         assertThat(testFileCatalog.getProcessFinishDate()).isEqualTo(DEFAULT_PROCESS_FINISH_DATE);
         assertThat(testFileCatalog.getDeviceId()).isEqualTo(DEFAULT_DEVICE_ID);
+        assertThat(testFileCatalog.getUuid()).isEqualTo(DEFAULT_UUID);
     }
 
     @Test
@@ -191,7 +191,8 @@ public class FileCatalogResourceIntTest {
             .andExpect(jsonPath("$.[*].deleted").value(hasItem(DEFAULT_DELETED.booleanValue())))
             .andExpect(jsonPath("$.[*].insert").value(hasItem(DEFAULT_INSERT.toString())))
             .andExpect(jsonPath("$.[*].processFinishDate").value(hasItem(DEFAULT_PROCESS_FINISH_DATE.toString())))
-            .andExpect(jsonPath("$.[*].deviceId").value(hasItem(DEFAULT_DEVICE_ID.toString())));
+            .andExpect(jsonPath("$.[*].deviceId").value(hasItem(DEFAULT_DEVICE_ID.toString())))
+            .andExpect(jsonPath("$.[*].uuid").value(hasItem(DEFAULT_UUID.toString())));
     }
 
     @Test
@@ -210,7 +211,8 @@ public class FileCatalogResourceIntTest {
             .andExpect(jsonPath("$.deleted").value(DEFAULT_DELETED.booleanValue()))
             .andExpect(jsonPath("$.insert").value(DEFAULT_INSERT.toString()))
             .andExpect(jsonPath("$.processFinishDate").value(DEFAULT_PROCESS_FINISH_DATE.toString()))
-            .andExpect(jsonPath("$.deviceId").value(DEFAULT_DEVICE_ID.toString()));
+            .andExpect(jsonPath("$.deviceId").value(DEFAULT_DEVICE_ID.toString()))
+            .andExpect(jsonPath("$.uuid").value(DEFAULT_UUID.toString()));
     }
 
     @Test
@@ -238,7 +240,8 @@ public class FileCatalogResourceIntTest {
             .deleted(UPDATED_DELETED)
             .insert(UPDATED_INSERT)
             .processFinishDate(UPDATED_PROCESS_FINISH_DATE)
-            .deviceId(UPDATED_DEVICE_ID);
+            .deviceId(UPDATED_DEVICE_ID)
+            .uuid(UPDATED_UUID);
 
         restFileCatalogMockMvc.perform(put("/api/file-catalogs")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -255,6 +258,7 @@ public class FileCatalogResourceIntTest {
         assertThat(testFileCatalog.getInsert()).isEqualTo(UPDATED_INSERT);
         assertThat(testFileCatalog.getProcessFinishDate()).isEqualTo(UPDATED_PROCESS_FINISH_DATE);
         assertThat(testFileCatalog.getDeviceId()).isEqualTo(UPDATED_DEVICE_ID);
+        assertThat(testFileCatalog.getUuid()).isEqualTo(UPDATED_UUID);
     }
 
     @Test

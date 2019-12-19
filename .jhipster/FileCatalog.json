@@ -28,6 +28,10 @@
         {
             "fieldName": "deviceId",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "uuid",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20191218214932",

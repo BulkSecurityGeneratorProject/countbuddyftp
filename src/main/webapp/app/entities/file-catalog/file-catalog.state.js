@@ -130,6 +130,7 @@
                                 insert: null,
                                 processFinishDate: null,
                                 deviceId: null,
+                                uuid: null,
                                 id: null
                             };
                         }

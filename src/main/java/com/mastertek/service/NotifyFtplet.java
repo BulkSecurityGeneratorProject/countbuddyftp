@@ -25,6 +25,7 @@ public class NotifyFtplet extends DefaultFtplet {
 	
 	String readDirectory;
 	
+	private final NotifyService notifyService;
 	
 	private final ApplicationProperties applicationProperties ;
 
@@ -32,6 +33,7 @@ public class NotifyFtplet extends DefaultFtplet {
 		super();
 		this.readDirectory = readDirectory;
 		this.applicationProperties = applicationProperties;
+		this.notifyService = notifyService;
 	}
 
 
@@ -52,7 +54,7 @@ public class NotifyFtplet extends DefaultFtplet {
 			String uuid = UUID.randomUUID().toString();
 			log.info(request.getArgument() +" ftp  start");
 	       
-			//faceRecognitionService.analyze(uuid, path);
+			notifyService.process(path);
 		
 			log.info(request.getArgument() +" ftp  finish");
 		} catch (Exception e) {

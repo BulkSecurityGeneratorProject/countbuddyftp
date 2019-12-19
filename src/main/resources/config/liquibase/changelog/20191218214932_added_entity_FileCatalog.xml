@@ -57,5 +57,21 @@
         <dropDefaultValue tableName="file_catalog" columnName="process_finish_date" columnDataType="datetime"/>
         
     </changeSet>
+    
+    <changeSet id="20191218214932-2" author="jhipster">
+   		<preConditions onFail="MARK_RAN">
+      		<not>
+        		<columnExists tableName="file_catalog" columnName="uuid" />
+      		</not>
+    	</preConditions>
+    	 <addColumn tableName="file_catalog">
+        	 
+             <column name="uuid" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+         </addColumn>
+   </changeSet> 	
+    	
+    
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.time.Instant;
+import java.util.UUID;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -38,27 +39,39 @@ public class NotifyService {
 
 
 
-	public void process(String path) {
+	public void process(String path) throws ClientProtocolException, IOException {
+		String uuid = UUID.randomUUID().toString();
+		log.info(uuid+" islemi yapılıyor.");
+		
     	FileCatalog fileCatalog = new FileCatalog();
+    	fileCatalog.setUuid(uuid);
     	fileCatalog.setDeviceId(getDeviceId(path));
     	fileCatalog.setInsert(Instant.now());
     	fileCatalog.setPath(path);
     	fileCatalog.setProcessed(false);
     	fileCatalogRepository.save(fileCatalog);
+    	
+    	log.info(uuid+" kaydedildi.");
+    	notifyBackendApp(fileCatalog);
     }
     
    
     
     @Async
-	public void notifyBackendApp(String path) throws ClientProtocolException, IOException {
+	public void notifyBackendApp(FileCatalog fileCatalog) throws ClientProtocolException, IOException {
 
-		String url = "http://localhost:9095/api/records/processImage?path=";
-		String encoded = URLEncoder.encode(path, "UTF-8");
+		String url = "http://localhost:9095/api/records/processImage?";
+		url = url+"path="+fileCatalog.getPath()+"&";
+		url = url+"uuid="+fileCatalog.getUuid()+"&";
+		url = url+"fileCatalogId="+fileCatalog.getId();
 		
+		log.info(fileCatalog.getUuid()+" notify ediliyor.");
 		
-		HttpGet httpPost = new HttpGet(url+encoded);
+		String encoded = URLEncoder.encode(url, "UTF-8");
+		HttpGet httpPost = new HttpGet(encoded);
 		String result = sendRequest(httpPost);
-		log.info("notifyFileUpload tamamlandı");
+		
+		log.info(fileCatalog.getUuid()+" notify tamamlandı.");
 	}
 	
 	private String sendRequest(HttpUriRequest request) throws ClientProtocolException, IOException {

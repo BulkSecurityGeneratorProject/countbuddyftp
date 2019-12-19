@@ -1,19 +1,14 @@
 package com.mastertek.domain;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import javax.validation.constraints.*;
+
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A FileCatalog.
@@ -47,6 +42,9 @@ public class FileCatalog implements Serializable {
 
     @Column(name = "device_id")
     private String deviceId;
+
+    @Column(name = "uuid")
+    private String uuid;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -134,6 +132,19 @@ public class FileCatalog implements Serializable {
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
     }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public FileCatalog uuid(String uuid) {
+        this.uuid = uuid;
+        return this;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -166,6 +177,7 @@ public class FileCatalog implements Serializable {
             ", insert='" + getInsert() + "'" +
             ", processFinishDate='" + getProcessFinishDate() + "'" +
             ", deviceId='" + getDeviceId() + "'" +
+            ", uuid='" + getUuid() + "'" +
             "}";
     }
 }

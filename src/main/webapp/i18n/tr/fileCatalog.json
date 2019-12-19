@@ -20,7 +20,8 @@
             "deleted": "Deleted",
             "insert": "Insert",
             "processFinishDate": "Process Finish Date",
-            "deviceId": "Device Id"
+            "deviceId": "Device Id",
+            "uuid": "Uuid"
         }
     }
 }
