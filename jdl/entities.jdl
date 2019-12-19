@@ -6,3 +6,5 @@ entity FileCatalog{
 	 processFinishDate Instant
 	 deviceId String
 }
+
+paginate FileCatalog with pager 

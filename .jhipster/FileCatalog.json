@@ -33,7 +33,7 @@
     "changelogDate": "20191218214932",
     "entityTableName": "file_catalog",
     "dto": "no",
-    "pagination": "no",
+    "pagination": "pager",
     "service": "no",
     "jpaMetamodelFiltering": false
 }
