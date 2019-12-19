@@ -1,15 +1,12 @@
 package com.mastertek.service;
 
-import com.mastertek.domain.Authority;
-import com.mastertek.domain.User;
-import com.mastertek.repository.AuthorityRepository;
-import com.mastertek.config.Constants;
-import com.mastertek.repository.UserRepository;
-import com.mastertek.security.AuthoritiesConstants;
-import com.mastertek.security.SecurityUtils;
-import com.mastertek.service.util.RandomUtil;
-import com.mastertek.service.dto.UserDTO;
-import com.mastertek.web.rest.vm.ManagedUserVM;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +18,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
-import java.util.stream.Collectors;
+import com.mastertek.config.Constants;
+import com.mastertek.domain.Authority;
+import com.mastertek.domain.User;
+import com.mastertek.repository.AuthorityRepository;
+import com.mastertek.repository.UserRepository;
+import com.mastertek.security.AuthoritiesConstants;
+import com.mastertek.security.SecurityUtils;
+import com.mastertek.service.dto.UserDTO;
+import com.mastertek.service.util.RandomUtil;
 
 /**
  * Service class for managing users.

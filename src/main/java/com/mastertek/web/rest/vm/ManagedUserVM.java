@@ -1,7 +1,8 @@
 package com.mastertek.web.rest.vm;
 
-import com.mastertek.service.dto.UserDTO;
 import javax.validation.constraints.Size;
+
+import com.mastertek.service.dto.UserDTO;
 
 /**
  * View Model extending the UserDTO, which is meant to be used in the user management UI.

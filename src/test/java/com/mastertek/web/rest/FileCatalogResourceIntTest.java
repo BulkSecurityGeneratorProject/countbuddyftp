@@ -1,10 +1,21 @@
 package com.mastertek.web.rest;
 
-import com.mastertek.FtpcountbuddyApp;
+import static com.mastertek.web.rest.TestUtil.createFormattingConversionService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.mastertek.domain.FileCatalog;
-import com.mastertek.repository.FileCatalogRepository;
-import com.mastertek.web.rest.errors.ExceptionTranslator;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,16 +31,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-
-import static com.mastertek.web.rest.TestUtil.createFormattingConversionService;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import com.mastertek.FtpcountbuddyApp;
+import com.mastertek.domain.FileCatalog;
+import com.mastertek.repository.FileCatalogRepository;
+import com.mastertek.web.rest.errors.ExceptionTranslator;
 
 /**
  * Test class for the FileCatalogResource REST controller.

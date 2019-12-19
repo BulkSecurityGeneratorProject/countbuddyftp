@@ -1,11 +1,13 @@
 package com.mastertek.web.rest;
 
-import com.mastertek.FtpcountbuddyApp;
-import com.mastertek.domain.User;
-import com.mastertek.repository.UserRepository;
-import com.mastertek.security.jwt.TokenProvider;
-import com.mastertek.web.rest.vm.LoginVM;
-import com.mastertek.web.rest.errors.ExceptionTranslator;
+import static org.hamcrest.Matchers.isEmptyString;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,13 +20,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.Matchers.isEmptyString;
-import static org.hamcrest.Matchers.not;
+import com.mastertek.FtpcountbuddyApp;
+import com.mastertek.domain.User;
+import com.mastertek.repository.UserRepository;
+import com.mastertek.security.jwt.TokenProvider;
+import com.mastertek.web.rest.errors.ExceptionTranslator;
+import com.mastertek.web.rest.vm.LoginVM;
 
 /**
  * Test class for the UserJWTController REST controller.

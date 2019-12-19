@@ -1,9 +1,7 @@
 package com.mastertek.config;
 
-import io.github.jhipster.config.JHipsterConstants;
-import io.github.jhipster.config.liquibase.AsyncSpringLiquibase;
+import javax.sql.DataSource;
 
-import liquibase.integration.spring.SpringLiquibase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,9 +14,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.sql.DataSource;
-import org.springframework.context.annotation.ComponentScan.Filter;
-import org.springframework.context.annotation.FilterType;
+import io.github.jhipster.config.JHipsterConstants;
+import io.github.jhipster.config.liquibase.AsyncSpringLiquibase;
+import liquibase.integration.spring.SpringLiquibase;
 
 @Configuration
 @EnableJpaRepositories("com.mastertek.repository")

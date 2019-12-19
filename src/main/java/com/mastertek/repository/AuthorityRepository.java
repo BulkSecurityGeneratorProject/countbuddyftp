@@ -1,8 +1,8 @@
 package com.mastertek.repository;
 
-import com.mastertek.domain.Authority;
-
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.mastertek.domain.Authority;
 
 /**
  * Spring Data JPA repository for the Authority entity.

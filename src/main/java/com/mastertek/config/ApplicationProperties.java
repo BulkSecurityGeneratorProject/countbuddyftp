@@ -11,4 +11,62 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
 
+	String ftpDirectory;
+	String passiveAddress;
+	String passiveExternalAddress;
+	String passivePorts;
+	String passowordFile;
+	Long ftpPort;
+	String ftpDefaultUser;
+	String ftpDefaultPassord;
+	
+	public String getFtpDirectory() {
+		return ftpDirectory;
+	}
+	public void setFtpDirectory(String ftpDirectory) {
+		this.ftpDirectory = ftpDirectory;
+	}
+	public String getPassiveAddress() {
+		return passiveAddress;
+	}
+	public void setPassiveAddress(String passiveAddress) {
+		this.passiveAddress = passiveAddress;
+	}
+	public String getPassiveExternalAddress() {
+		return passiveExternalAddress;
+	}
+	public void setPassiveExternalAddress(String passiveExternalAddress) {
+		this.passiveExternalAddress = passiveExternalAddress;
+	}
+	public String getPassivePorts() {
+		return passivePorts;
+	}
+	public void setPassivePorts(String passivePorts) {
+		this.passivePorts = passivePorts;
+	}
+	public String getPassowordFile() {
+		return passowordFile;
+	}
+	public void setPassowordFile(String passowordFile) {
+		this.passowordFile = passowordFile;
+	}
+	public Long getFtpPort() {
+		return ftpPort;
+	}
+	public void setFtpPort(Long ftpPort) {
+		this.ftpPort = ftpPort;
+	}
+	public String getFtpDefaultUser() {
+		return ftpDefaultUser;
+	}
+	public void setFtpDefaultUser(String ftpDefaultUser) {
+		this.ftpDefaultUser = ftpDefaultUser;
+	}
+	public String getFtpDefaultPassord() {
+		return ftpDefaultPassord;
+	}
+	public void setFtpDefaultPassord(String ftpDefaultPassord) {
+		this.ftpDefaultPassord = ftpDefaultPassord;
+	}
+	
 }

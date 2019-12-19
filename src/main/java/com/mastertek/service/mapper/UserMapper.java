@@ -1,13 +1,15 @@
 package com.mastertek.service.mapper;
 
-import com.mastertek.domain.Authority;
-import com.mastertek.domain.User;
-import com.mastertek.service.dto.UserDTO;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import com.mastertek.domain.Authority;
+import com.mastertek.domain.User;
+import com.mastertek.service.dto.UserDTO;
 
 /**
  * Mapper for the entity User and its DTO called UserDTO.

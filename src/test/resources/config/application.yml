@@ -113,3 +113,11 @@ jhipster:
 # ===================================================================
 
 application:
+    ftpDirectory: c:\publicDirectoryUnitTest
+    passiveAddress: ec2-18-224-251-88.us-east-2.compute.amazonaws.com
+    passiveExternalAddress:  countbuddy.mastertek.com.tr
+    passivePorts: 10000-11000
+    passowordFile: c:\ftpuserfiles\myftpusersunittest.properties
+    ftpPort: 21200
+    ftpDefaultUser: countbuddyFtp
+    ftpDefaultPassord: 105957Grk.

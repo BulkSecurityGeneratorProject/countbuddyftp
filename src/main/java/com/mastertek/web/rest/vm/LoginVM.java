@@ -1,9 +1,10 @@
 package com.mastertek.web.rest.vm;
 
-import com.mastertek.config.Constants;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
+import com.mastertek.config.Constants;
 
 /**
  * View Model object for storing a user's credentials.

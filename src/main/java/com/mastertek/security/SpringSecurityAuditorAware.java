@@ -1,9 +1,9 @@
 package com.mastertek.security;
 
-import com.mastertek.config.Constants;
-
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
+
+import com.mastertek.config.Constants;
 
 /**
  * Implementation of AuditorAware based on Spring Security.

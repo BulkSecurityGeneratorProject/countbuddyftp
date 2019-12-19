@@ -1,17 +1,18 @@
 package com.mastertek.service.dto;
 
-import com.mastertek.config.Constants;
+import java.time.Instant;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import com.mastertek.domain.Authority;
-import com.mastertek.domain.User;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.*;
-import java.time.Instant;
-import java.util.Set;
-import java.util.stream.Collectors;
+import com.mastertek.config.Constants;
+import com.mastertek.domain.Authority;
+import com.mastertek.domain.User;
 
 /**
  * A DTO representing a user, with his authorities.

@@ -1,11 +1,11 @@
 package com.mastertek.service;
 
-import com.mastertek.FtpcountbuddyApp;
-import com.mastertek.config.Constants;
-import com.mastertek.domain.User;
-import com.mastertek.repository.UserRepository;
-import com.mastertek.service.dto.UserDTO;
-import com.mastertek.service.util.RandomUtil;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
@@ -18,12 +18,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import com.mastertek.FtpcountbuddyApp;
+import com.mastertek.config.Constants;
+import com.mastertek.domain.User;
+import com.mastertek.repository.UserRepository;
+import com.mastertek.service.dto.UserDTO;
+import com.mastertek.service.util.RandomUtil;
 
 /**
  * Test class for the UserResource REST controller.

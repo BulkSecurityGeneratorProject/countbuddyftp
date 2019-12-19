@@ -1,9 +1,11 @@
 package com.mastertek.security.jwt;
 
-import com.mastertek.security.AuthoritiesConstants;
-import io.github.jhipster.config.JHipsterProperties;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -13,11 +15,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
+import com.mastertek.security.AuthoritiesConstants;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import io.github.jhipster.config.JHipsterProperties;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 public class TokenProviderTest {
 
