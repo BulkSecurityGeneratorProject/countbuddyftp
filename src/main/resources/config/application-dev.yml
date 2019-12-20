@@ -168,3 +168,4 @@ application:
     ftpPort: 21211
     ftpDefaultUser: countbuddyFtp
     ftpDefaultPassord: 105957Grk.
+    environment: dev

@@ -121,3 +121,4 @@ application:
     ftpPort: 21200
     ftpDefaultUser: countbuddyFtp
     ftpDefaultPassord: 105957Grk.
+    environment: unittest

@@ -20,6 +20,8 @@ public class ApplicationProperties {
 	String ftpDefaultUser;
 	String ftpDefaultPassord;
 	
+	String environment;
+	
 	public String getFtpDirectory() {
 		return ftpDirectory;
 	}
@@ -67,6 +69,12 @@ public class ApplicationProperties {
 	}
 	public void setFtpDefaultPassord(String ftpDefaultPassord) {
 		this.ftpDefaultPassord = ftpDefaultPassord;
+	}
+	public String getEnvironment() {
+		return environment;
+	}
+	public void setEnvironment(String environment) {
+		this.environment = environment;
 	}
 	
 }

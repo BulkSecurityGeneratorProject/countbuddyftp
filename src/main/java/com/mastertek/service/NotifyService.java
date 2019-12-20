@@ -19,6 +19,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mastertek.config.ApplicationProperties;
 import com.mastertek.domain.FileCatalog;
 import com.mastertek.repository.FileCatalogRepository;
 
@@ -30,11 +31,12 @@ public class NotifyService {
 
     private final FileCatalogRepository fileCatalogRepository; 
     
+    private final ApplicationProperties applicationProperties; 
     
-    
-    public NotifyService(FileCatalogRepository fileCatalogRepository) {
+    public NotifyService(FileCatalogRepository fileCatalogRepository,ApplicationProperties applicationProperties) {
 		super();
 		this.fileCatalogRepository = fileCatalogRepository;
+		this.applicationProperties = applicationProperties;
 	}
 
 
@@ -59,7 +61,8 @@ public class NotifyService {
     
     @Async
 	public void notifyBackendApp(FileCatalog fileCatalog) throws ClientProtocolException, IOException {
-
+    	if(applicationProperties.getEnvironment().equals("unittest"))
+    		return;
 		String url = "http://localhost:9095/api/records/processImage?";
 		url = url+"path="+fileCatalog.getPath()+"&";
 		url = url+"uuid="+fileCatalog.getUuid()+"&";

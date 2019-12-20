@@ -2,18 +2,11 @@ package com.mastertek.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.net.SocketException;
-import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.net.PrintCommandListener;
-import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPReply;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +19,8 @@ import com.mastertek.FtpcountbuddyApp;
 import com.mastertek.config.ApplicationProperties;
 import com.mastertek.domain.FileCatalog;
 import com.mastertek.repository.FileCatalogRepository;
+import com.mastertek.web.rest.util.CountBuddyUtil;
+import com.mastertek.web.rest.util.FtpWorkerThread;
 
 
 
@@ -45,10 +40,7 @@ public class FtpTest {
     public void setup() {
     
     }	
-    @Test
-    public void performanceTest_2() throws Exception {
-        System.out.println("sdfsdf");
-    }	
+   
     
     @Test
     public void performanceTest() throws Exception {
@@ -59,11 +51,12 @@ public class FtpTest {
     
     @Test
     public void ftpTest() throws Exception {
+    	fileCatalogRepository.deleteAll();
     	FileUtils.cleanDirectory(new File(applicationProperties.getFtpDirectory()));
     	ClassLoader classLoader = getClass().getClassLoader();
     	File file = new File(classLoader.getResource("Face_733935_19121_1557049797506.jpg").getFile());
     	
-    	sendFtpFile("localhost", applicationProperties.getFtpPort().intValue(), file);
+    	CountBuddyUtil.sendFtpFile("localhost", applicationProperties.getFtpPort().intValue(), file,applicationProperties.getFtpDefaultUser(),applicationProperties.getFtpDefaultPassord());
     	assertThat(fileCatalogRepository.count()).isEqualTo(1);
     	
     	FileCatalog fileCatalog = fileCatalogRepository.findAll().get(0);
@@ -74,38 +67,36 @@ public class FtpTest {
     	assertThat(fileCatalog.getUuid()).isNotNull();
     }	
     
-    public Boolean sendFtpFile(String localhost,int port,File file) throws Exception {
-    	FTPClient ftp = null;
-    	ftp = new FTPClient();
-		ftp.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
-		int reply;
-		ftp.connect("localhost",port);
-		reply = ftp.getReplyCode();
-		if (!FTPReply.isPositiveCompletion(reply)) {
-			ftp.disconnect();
-			throw new Exception("Exception in connecting to FTP Server");
+    
+    @Test
+	public void performanceTest_2() throws Exception {
+    	fileCatalogRepository.deleteAll();
+    	FileUtils.cleanDirectory(new File(applicationProperties.getFtpDirectory()));
+    	ExecutorService executor = Executors.newFixedThreadPool(10);
+
+		String path4= "C:\\Users\\ramazan\\git\\performanceTestData\\input";
+
+		File[] files = CountBuddyUtil.getFileList(path4);
+		long count = 0;
+		long count2;
+		for (int i = 0; i < 10000; i++) {
+			if (i >= files.length)
+				continue;
+
+			Runnable worker = new FtpWorkerThread(files[i],applicationProperties.getFtpPort().intValue(),applicationProperties.getFtpDefaultUser(),applicationProperties.getFtpDefaultPassord(),i);
+			executor.execute(worker);
+			count++;
+			System.out.println("i-->" + i + ",count-->" + count);
+
 		}
 		
-		ftp.login(applicationProperties.getFtpDefaultUser(),applicationProperties.getFtpDefaultPassord());
-		ftp.setFileType(FTP.BINARY_FILE_TYPE);
-		ftp.enterLocalPassiveMode();
+		executor.shutdown();
+		executor.awaitTermination(30, TimeUnit.SECONDS);
 		
-		
-    	
-		InputStream input = new FileInputStream(file);
-		Boolean result =ftp.storeFile(file.getName(), input);
-		
-		if (ftp.isConnected()) {
-			try {
-				ftp.logout();
-				ftp.disconnect();
-			} catch (IOException f) {
-				// do nothing as file is already saved to server
-			}
-		}
-		return result;
-		
-    }
-    
-    
+		assertThat(fileCatalogRepository.count()).isEqualTo(1813);
+	}
+   
 }
+
+
+

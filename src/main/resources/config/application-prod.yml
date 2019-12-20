@@ -158,3 +158,4 @@ application:
     ftpPort: 21121
     ftpDefaultUser: countbuddyFtp
     ftpDefaultPassord: 105957Grk.
+    environment: prod
