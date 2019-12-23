@@ -3,7 +3,10 @@ package com.mastertek.repository;
 import com.mastertek.domain.FileCatalog;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
 
 
 /**
@@ -13,4 +16,5 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface FileCatalogRepository extends JpaRepository<FileCatalog, Long> {
 
+	
 }

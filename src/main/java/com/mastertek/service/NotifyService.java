@@ -63,15 +63,17 @@ public class NotifyService {
 	public void notifyBackendApp(FileCatalog fileCatalog) throws ClientProtocolException, IOException {
     	if(applicationProperties.getEnvironment().equals("unittest"))
     		return;
-		String url = "http://localhost:9095/api/records/processImage?";
-		url = url+"path="+fileCatalog.getPath()+"&";
-		url = url+"uuid="+fileCatalog.getUuid()+"&";
-		url = url+"fileCatalogId="+fileCatalog.getId();
+		
+    	String url = "http://localhost:9095/api/records/processImage";
+    	String parameters = "?";
+    	parameters = parameters+"path="+URLEncoder.encode(fileCatalog.getPath(), "UTF-8")+"&";
+    	parameters = parameters+"uuid="+fileCatalog.getUuid()+"&";
+    	parameters = parameters+"fileCatalogId="+fileCatalog.getId();
 		
 		log.info(fileCatalog.getUuid()+" notify ediliyor.");
 		
-		String encoded = URLEncoder.encode(url, "UTF-8");
-		HttpGet httpPost = new HttpGet(encoded);
+		//String encoded = URLEncoder.encode(parameters, "UTF-8");
+		HttpGet httpPost = new HttpGet(url+parameters);
 		String result = sendRequest(httpPost);
 		
 		log.info(fileCatalog.getUuid()+" notify tamamlandı.");

@@ -22,6 +22,10 @@ public class ApplicationProperties {
 	
 	String environment;
 	
+	String performanceTestDataPath; 
+	
+	String notifyUrl; 
+	
 	public String getFtpDirectory() {
 		return ftpDirectory;
 	}
@@ -75,6 +79,18 @@ public class ApplicationProperties {
 	}
 	public void setEnvironment(String environment) {
 		this.environment = environment;
+	}
+	public String getPerformanceTestDataPath() {
+		return performanceTestDataPath;
+	}
+	public void setPerformanceTestDataPath(String performanceTestDataPath) {
+		this.performanceTestDataPath = performanceTestDataPath;
+	}
+	public String getNotifyUrl() {
+		return notifyUrl;
+	}
+	public void setNotifyUrl(String notifyUrl) {
+		this.notifyUrl = notifyUrl;
 	}
 	
 }

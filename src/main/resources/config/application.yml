@@ -126,3 +126,5 @@ jhipster:
 # ===================================================================
 
 application:
+    performanceTestDataPath: C:\Users\ramazan\git\performanceTestData\input
+    notifyUrl: http://localhost:9095/api/records/processImage

@@ -74,7 +74,7 @@ public class FtpTest {
     	FileUtils.cleanDirectory(new File(applicationProperties.getFtpDirectory()));
     	ExecutorService executor = Executors.newFixedThreadPool(10);
 
-		String path4= "C:\\Users\\ramazan\\git\\performanceTestData\\input";
+		String path4= applicationProperties.getPerformanceTestDataPath();
 
 		File[] files = CountBuddyUtil.getFileList(path4);
 		long count = 0;

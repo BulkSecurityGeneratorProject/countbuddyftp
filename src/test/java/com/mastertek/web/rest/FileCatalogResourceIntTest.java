@@ -1,9 +1,10 @@
 package com.mastertek.web.rest;
 
 import com.mastertek.FtpcountbuddyApp;
-
+import com.mastertek.config.ApplicationProperties;
 import com.mastertek.domain.FileCatalog;
 import com.mastertek.repository.FileCatalogRepository;
+import com.mastertek.service.DatabaseService;
 import com.mastertek.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -79,11 +80,17 @@ public class FileCatalogResourceIntTest {
     private MockMvc restFileCatalogMockMvc;
 
     private FileCatalog fileCatalog;
+    
+    @Autowired
+    ApplicationProperties applicationProperties;
+    
+    @Autowired
+    DatabaseService databaseService;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final FileCatalogResource fileCatalogResource = new FileCatalogResource(fileCatalogRepository);
+        final FileCatalogResource fileCatalogResource = new FileCatalogResource(fileCatalogRepository,applicationProperties,databaseService);
         this.restFileCatalogMockMvc = MockMvcBuilders.standaloneSetup(fileCatalogResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

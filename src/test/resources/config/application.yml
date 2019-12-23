@@ -122,3 +122,5 @@ application:
     ftpDefaultUser: countbuddyFtp
     ftpDefaultPassord: 105957Grk.
     environment: unittest
+    performanceTestDataPath: C:\Users\ramazan\git\performanceTestData\input
+    notifyUrl: http://localhost:9095/api/records/processImage

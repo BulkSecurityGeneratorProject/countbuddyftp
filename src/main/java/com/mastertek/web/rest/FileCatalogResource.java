@@ -1,13 +1,15 @@
 package com.mastertek.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import com.mastertek.domain.FileCatalog;
+import java.io.File;
+import java.math.BigInteger;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 
-import com.mastertek.repository.FileCatalogRepository;
-import com.mastertek.web.rest.errors.BadRequestAlertException;
-import com.mastertek.web.rest.util.HeaderUtil;
-import com.mastertek.web.rest.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import javax.validation.Valid;
+
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -15,14 +17,26 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.codahale.metrics.annotation.Timed;
+import com.mastertek.config.ApplicationProperties;
+import com.mastertek.domain.FileCatalog;
+import com.mastertek.repository.FileCatalogRepository;
+import com.mastertek.service.DatabaseService;
+import com.mastertek.web.rest.errors.BadRequestAlertException;
+import com.mastertek.web.rest.util.CountBuddyUtil;
+import com.mastertek.web.rest.util.HeaderUtil;
+import com.mastertek.web.rest.util.PaginationUtil;
 
-import java.util.List;
-import java.util.Optional;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing FileCatalog.
@@ -37,8 +51,14 @@ public class FileCatalogResource {
 
     private final FileCatalogRepository fileCatalogRepository;
 
-    public FileCatalogResource(FileCatalogRepository fileCatalogRepository) {
+    private final ApplicationProperties applicationProperties;
+    
+    private final DatabaseService databaseService;
+    
+    public FileCatalogResource(FileCatalogRepository fileCatalogRepository,ApplicationProperties applicationProperties,DatabaseService databaseService) {
         this.fileCatalogRepository = fileCatalogRepository;
+        this.applicationProperties = applicationProperties;
+        this.databaseService = databaseService;
     }
 
     /**
@@ -124,5 +144,35 @@ public class FileCatalogResource {
         log.debug("REST request to delete FileCatalog : {}", id);
         fileCatalogRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+    
+    
+    @GetMapping("/file-catalogs/performanceTest")
+    @Timed
+    public void performanceTest() throws Exception {
+    	
+    	databaseService.prepareDatabaseForTest();
+    	fileCatalogRepository.deleteAll();
+    	FileUtils.cleanDirectory(new File(applicationProperties.getFtpDirectory()));
+    	
+    	String path4= applicationProperties.getPerformanceTestDataPath();
+
+		File[] files = CountBuddyUtil.getFileList(path4);
+    
+		for (int i = 0; i < files.length; i++) {
+			File file = files[i];
+			CountBuddyUtil.sendFtpFile("localhost", applicationProperties.getFtpPort().intValue(), file, applicationProperties.getFtpDefaultUser(), applicationProperties.getFtpDefaultPassord());
+		}
+		
+		long count = fileCatalogRepository.count();
+		if(count!=files.length)
+			throw new RuntimeException("fileCatalog size not true");
+    	
+    	BigInteger recordCount = databaseService.getRecordCount();
+    	if(recordCount.longValue()!=1429)
+			throw new RuntimeException("record size not true");
+    	
+    	System.out.println("bitti");
+    	
     }
 }
