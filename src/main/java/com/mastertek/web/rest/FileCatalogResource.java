@@ -149,6 +149,7 @@ public class FileCatalogResource {
     
     @GetMapping("/file-catalogs/performanceTest")
     @Timed
+    //çalışma öncesi cache temizlenmelidir.
     public void performanceTest() throws Exception {
     	
     	databaseService.prepareDatabaseForTest();
@@ -161,6 +162,7 @@ public class FileCatalogResource {
     
 		for (int i = 0; i < files.length; i++) {
 			File file = files[i];
+			Thread.currentThread().sleep(30);
 			CountBuddyUtil.sendFtpFile("localhost", applicationProperties.getFtpPort().intValue(), file, applicationProperties.getFtpDefaultUser(), applicationProperties.getFtpDefaultPassord());
 		}
 		
@@ -171,6 +173,12 @@ public class FileCatalogResource {
     	BigInteger recordCount = databaseService.getRecordCount();
     	if(recordCount.longValue()!=1429)
 			throw new RuntimeException("record size not true");
+    	
+    	
+    	int processedListSize =fileCatalogRepository.findByProcessedStatus(false).size();
+    	if(processedListSize>0)
+			throw new RuntimeException("processed size not true");
+    
     	
     	System.out.println("bitti");
     	

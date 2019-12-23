@@ -39,13 +39,11 @@ public class NotifyService {
 		this.applicationProperties = applicationProperties;
 	}
 
-
-
-	public void process(String path) throws ClientProtocolException, IOException {
-		String uuid = UUID.randomUUID().toString();
+    public FileCatalog createFileCatalog(String path) {
+    	String uuid = UUID.randomUUID().toString();
 		log.info(uuid+" islemi yapılıyor.");
-		
-    	FileCatalog fileCatalog = new FileCatalog();
+    	
+		FileCatalog fileCatalog = new FileCatalog();
     	fileCatalog.setUuid(uuid);
     	fileCatalog.setDeviceId(getDeviceId(path));
     	fileCatalog.setInsert(Instant.now());
@@ -54,8 +52,11 @@ public class NotifyService {
     	fileCatalogRepository.save(fileCatalog);
     	
     	log.info(uuid+" kaydedildi.");
-    	notifyBackendApp(fileCatalog);
+    	return fileCatalog;
     }
+    
+
+	
     
    
     
@@ -64,7 +65,7 @@ public class NotifyService {
     	if(applicationProperties.getEnvironment().equals("unittest"))
     		return;
 		
-    	String url = "http://localhost:9095/api/records/processImage";
+    	String url = applicationProperties.getNotifyUrl();
     	String parameters = "?";
     	parameters = parameters+"path="+URLEncoder.encode(fileCatalog.getPath(), "UTF-8")+"&";
     	parameters = parameters+"uuid="+fileCatalog.getUuid()+"&";

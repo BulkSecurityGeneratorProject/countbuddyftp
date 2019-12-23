@@ -16,5 +16,6 @@ import org.springframework.data.repository.query.Param;
 @Repository
 public interface FileCatalogRepository extends JpaRepository<FileCatalog, Long> {
 
-	
+	@Query("SELECT u FROM FileCatalog u WHERE u.processed =?1")
+	public List<FileCatalog> findByProcessedStatus(Boolean status);
 }

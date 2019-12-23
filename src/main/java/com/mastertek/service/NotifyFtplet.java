@@ -3,7 +3,6 @@ package com.mastertek.service;
 
 import java.io.IOException;
 import java.util.UUID;
-import java.util.concurrent.BlockingQueue;
 
 import org.apache.ftpserver.ftplet.DefaultFtplet;
 import org.apache.ftpserver.ftplet.FtpException;
@@ -14,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mastertek.config.ApplicationProperties;
+import com.mastertek.domain.FileCatalog;
 
 /**
  *
@@ -54,7 +54,8 @@ public class NotifyFtplet extends DefaultFtplet {
 			String uuid = UUID.randomUUID().toString();
 			log.info(request.getArgument() +" ftp  start");
 	       
-			notifyService.process(path);
+			FileCatalog fileCatalog= notifyService.createFileCatalog(path);
+			notifyService.notifyBackendApp(fileCatalog);
 		
 			log.info(request.getArgument() +" ftp  finish");
 		} catch (Exception e) {
