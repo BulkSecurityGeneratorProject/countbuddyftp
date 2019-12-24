@@ -1,0 +1,17 @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `local_seperate_ftp_test`()
+BEGIN
+delete from record where id>0;
+delete from log_details where id>0;
+delete from device where id>0;
+delete from location where id>0;
+delete from floor where id>0;
+delete from store where id>0;
+delete from company where id>0;
+
+INSERT INTO company (id, name ) VALUES (1,'company_Name');
+INSERT INTO store (id, name, company_id) VALUES (1,'store_Name',1);
+INSERT INTO floor (id, name,store_id ) VALUES (1,'flore_Name',1);
+INSERT INTO location (id, name,floor_id,jhi_type ) VALUES (1,'location_Name',1,'DOOR');
+INSERT INTO device (id, device_id,location_id,jhi_type ) VALUES (1,'744272',1,'CAMERA_INPUT');
+
+END
