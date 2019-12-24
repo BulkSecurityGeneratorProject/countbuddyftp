@@ -32,6 +32,10 @@
         {
             "fieldName": "uuid",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "url",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20191218214932",

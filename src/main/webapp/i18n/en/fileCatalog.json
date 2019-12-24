@@ -21,7 +21,8 @@
             "insert": "Insert",
             "processFinishDate": "Process Finish Date",
             "deviceId": "Device Id",
-            "uuid": "Uuid"
+            "uuid": "Uuid",
+            "url": "Url"
         }
     }
 }

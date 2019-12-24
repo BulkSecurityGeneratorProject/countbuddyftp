@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mastertek.config.ApplicationProperties;
 import com.mastertek.domain.FileCatalog;
 import com.mastertek.repository.FileCatalogRepository;
+import com.mastertek.web.rest.util.CountBuddyUtil;
 
 @Service
 @Transactional
@@ -49,6 +50,7 @@ public class NotifyService {
     	fileCatalog.setInsert(Instant.now());
     	fileCatalog.setPath(path);
     	fileCatalog.setProcessed(false);
+    	fileCatalog.setUrl(CountBuddyUtil.getAccesUrlByWeb(applicationProperties.getFtpDirectory(), applicationProperties.getLocalWebServerUrl(), path));
     	fileCatalogRepository.save(fileCatalog);
     	
     	log.info(uuid+" kaydedildi.");

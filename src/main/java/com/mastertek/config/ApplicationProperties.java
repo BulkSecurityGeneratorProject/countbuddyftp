@@ -26,6 +26,8 @@ public class ApplicationProperties {
 	
 	String notifyUrl; 
 	
+	String localWebServerUrl;
+	
 	public String getFtpDirectory() {
 		return ftpDirectory;
 	}
@@ -91,6 +93,12 @@ public class ApplicationProperties {
 	}
 	public void setNotifyUrl(String notifyUrl) {
 		this.notifyUrl = notifyUrl;
+	}
+	public String getLocalWebServerUrl() {
+		return localWebServerUrl;
+	}
+	public void setLocalWebServerUrl(String localWebServerUrl) {
+		this.localWebServerUrl = localWebServerUrl;
 	}
 	
 }

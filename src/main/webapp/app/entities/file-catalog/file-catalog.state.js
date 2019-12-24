@@ -131,6 +131,7 @@
                                 processFinishDate: null,
                                 deviceId: null,
                                 uuid: null,
+                                url: null,
                                 id: null
                             };
                         }
