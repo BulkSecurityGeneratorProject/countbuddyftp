@@ -68,6 +68,7 @@ public class CountBuddyUtil {
 	 
 	 public static String getAccesUrlByWeb(String ftpDirectory,String localWebServerUrl,String path) {
 		 String result = path.replace(ftpDirectory, localWebServerUrl);
+		 result = result.replace("\\", "/");
 		 return result;
 	 }
 }
