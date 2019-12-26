@@ -19,6 +19,8 @@ import org.apache.ftpserver.listener.ListenerFactory;
 import org.apache.ftpserver.usermanager.PropertiesUserManagerFactory;
 import org.apache.ftpserver.usermanager.SaltedPasswordEncryptor;
 import org.apache.ftpserver.usermanager.impl.BaseUser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.mastertek.config.ApplicationProperties;
@@ -26,14 +28,14 @@ import com.mastertek.config.ApplicationProperties;
 @Service
 public class CustomFtpServer {
 	
-	NotifyService notifyService;
+	 private final Logger log = LoggerFactory.getLogger(CustomFtpServer.class);
 	
+	NotifyService notifyService;
 	
 	ApplicationProperties applicationProperties;
 	
-	 FtpServer server;
+	FtpServer server;
 	
-	 
 	public CustomFtpServer(NotifyService notifyService,ApplicationProperties applicationProperties) {
 		super();
 		// TODO Auto-generated constructor stub
@@ -51,12 +53,20 @@ public void init() throws FtpException, IOException {
    
 	
 	File ftpDirectory = new File(applicationProperties.getFtpDirectory());
-	if(!ftpDirectory.exists())
+	if(!ftpDirectory.exists()) {
 		ftpDirectory.mkdir();
+		log.info(applicationProperties.getFtpDirectory() +" oluşturuldu");
+	}
+	log.info(applicationProperties.getFtpDirectory() +" ftp dizini olarak kullanılıyor");
 
+	
 	File passwordFile = new File(applicationProperties.getPassowordFile());
-	if(!passwordFile.exists())
+	if(!passwordFile.exists()) {
 		passwordFile.createNewFile();
+		log.info(applicationProperties.getPassowordFile() +" oluşturuldu");
+	}
+	log.info(applicationProperties.getPassowordFile() +" şifre dosyası kullanılıyor");
+	
 	
 	PropertiesUserManagerFactory userManagerFactory = new PropertiesUserManagerFactory();
 	userManagerFactory.setFile(passwordFile);

@@ -34,9 +34,9 @@ spring:
             enabled: false
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:mysql://localhost:3306/ftpcountbuddy?useUnicode=true&characterEncoding=utf8&useSSL=false
-        username: root
-        password:
+        url: jdbc:mysql://mastertekdb.cfyototaodfv.us-east-2.rds.amazonaws.com/countbuddy_ftp_test?useUnicode=true&characterEncoding=utf8&useSSL=false
+        username: masterTek6634
+        password: 105957Grk.
         hikari:
             data-source-properties:
                 cachePrepStmts: true
