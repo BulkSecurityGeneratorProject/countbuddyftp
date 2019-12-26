@@ -127,4 +127,3 @@ jhipster:
 
 application:
     performanceTestDataPath: C:\Users\ramazan\git\performanceTestData\input
-    notifyUrl: http://countbuddy.mastertek.com.tr:9990/api/records/processImage

@@ -170,3 +170,4 @@ application:
     ftpDefaultPassord: 105957Grk.
     environment: dev
     localWebServerUrl: http://localhost:7000
+    notifyUrl: http://countbuddy.mastertek.com.tr:9990/api/records/processImage
