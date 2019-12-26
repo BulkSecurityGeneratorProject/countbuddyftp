@@ -124,3 +124,4 @@ application:
     environment: unittest
     performanceTestDataPath: C:\Users\ramazan\git\performanceTestData\input
     notifyUrl: http://localhost:9095/api/records/processImage
+    localWebServerUrl: http://localhost:8889

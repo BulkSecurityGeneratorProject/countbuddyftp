@@ -37,6 +37,7 @@ import com.mastertek.web.rest.util.HeaderUtil;
 import com.mastertek.web.rest.util.PaginationUtil;
 
 import io.github.jhipster.web.util.ResponseUtil;
+import io.javalin.Javalin;
 
 /**
  * REST controller for managing FileCatalog.
@@ -55,10 +56,17 @@ public class FileCatalogResource {
     
     private final DatabaseService databaseService;
     
+    Javalin app;
+    
     public FileCatalogResource(FileCatalogRepository fileCatalogRepository,ApplicationProperties applicationProperties,DatabaseService databaseService) {
         this.fileCatalogRepository = fileCatalogRepository;
         this.applicationProperties = applicationProperties;
         this.databaseService = databaseService;
+        
+        if(applicationProperties.getEnvironment().equals("dev")) {
+	        app = Javalin.create().start(7000);
+	    	app.config.addStaticFiles(applicationProperties.getFtpDirectory(), io.javalin.http.staticfiles.Location.EXTERNAL);
+        }
     }
 
     /**
@@ -151,6 +159,10 @@ public class FileCatalogResource {
     @Timed
     //çalışma öncesi cache temizlenmelidir.
     public void performanceTest() throws Exception {
+    	
+    	if(!applicationProperties.getEnvironment().equals("dev")) {
+    		throw new RuntimeException("this method can be used only dev environment");
+    	}
     	
     	databaseService.prepareDatabaseForTest();
     	fileCatalogRepository.deleteAll();

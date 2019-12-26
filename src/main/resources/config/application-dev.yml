@@ -169,3 +169,4 @@ application:
     ftpDefaultUser: countbuddyFtp
     ftpDefaultPassord: 105957Grk.
     environment: dev
+    localWebServerUrl: http://localhost:7000

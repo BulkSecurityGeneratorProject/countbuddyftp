@@ -46,6 +46,9 @@ public class FileCatalog implements Serializable {
     @Column(name = "uuid")
     private String uuid;
 
+    @Column(name = "url")
+    private String url;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -145,6 +148,19 @@ public class FileCatalog implements Serializable {
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public FileCatalog url(String url) {
+        this.url = url;
+        return this;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -178,6 +194,7 @@ public class FileCatalog implements Serializable {
             ", processFinishDate='" + getProcessFinishDate() + "'" +
             ", deviceId='" + getDeviceId() + "'" +
             ", uuid='" + getUuid() + "'" +
+            ", url='" + getUrl() + "'" +
             "}";
     }
 }

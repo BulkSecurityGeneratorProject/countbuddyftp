@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mastertek.config.ApplicationProperties;
 import com.mastertek.domain.FileCatalog;
 import com.mastertek.repository.FileCatalogRepository;
+import com.mastertek.web.rest.util.CountBuddyUtil;
 
 @Service
 @Transactional
@@ -49,6 +50,7 @@ public class NotifyService {
     	fileCatalog.setInsert(Instant.now());
     	fileCatalog.setPath(path);
     	fileCatalog.setProcessed(false);
+    	fileCatalog.setUrl(CountBuddyUtil.getAccesUrlByWeb(applicationProperties.getFtpDirectory(), applicationProperties.getLocalWebServerUrl(), path));
     	fileCatalogRepository.save(fileCatalog);
     	
     	log.info(uuid+" kaydedildi.");
@@ -67,7 +69,7 @@ public class NotifyService {
 		
     	String url = applicationProperties.getNotifyUrl();
     	String parameters = "?";
-    	parameters = parameters+"path="+URLEncoder.encode(fileCatalog.getPath(), "UTF-8")+"&";
+    	parameters = parameters+"path="+URLEncoder.encode(fileCatalog.getUrl(), "UTF-8")+"&";
     	parameters = parameters+"uuid="+fileCatalog.getUuid()+"&";
     	parameters = parameters+"fileCatalogId="+fileCatalog.getId();
 		
@@ -80,6 +82,27 @@ public class NotifyService {
 		log.info(fileCatalog.getUuid()+" notify tamamlandı.");
 	}
 	
+    @Async
+	public void notifyBackendApp(String uuid,String path) throws ClientProtocolException, IOException {
+    	if(applicationProperties.getEnvironment().equals("unittest"))
+    		return;
+		
+    	String url = applicationProperties.getNotifyUrl();
+    	String parameters = "?";
+    	String fileUrl = CountBuddyUtil.getAccesUrlByWeb(applicationProperties.getFtpDirectory(), applicationProperties.getLocalWebServerUrl(), path);
+    	parameters = parameters+"path="+URLEncoder.encode(fileUrl, "UTF-8")+"&";
+    	parameters = parameters+"uuid="+uuid+"&";
+    	parameters = parameters+"fileCatalogId="+0;
+		
+		log.info(uuid+" notify ediliyor.(Hata dolayısı ile fileCatalog iletilmedi)");
+		
+		//String encoded = URLEncoder.encode(parameters, "UTF-8");
+		HttpGet httpPost = new HttpGet(url+parameters);
+		String result = sendRequest(httpPost);
+		
+		log.info(uuid+" notify tamamlandı.(Hata dolayısı ile fileCatalog iletilmedi)");
+	}
+    
 	private String sendRequest(HttpUriRequest request) throws ClientProtocolException, IOException {
 		CloseableHttpClient client = HttpClients.createDefault();
 	    CloseableHttpResponse response = client.execute(request);

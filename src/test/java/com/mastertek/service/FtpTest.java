@@ -65,6 +65,7 @@ public class FtpTest {
     	assertThat(fileCatalog.getPath()).contains("Face_733935_19121_1557049797506.jpg");
     	assertThat(fileCatalog.getProcessFinishDate()).isNull();
     	assertThat(fileCatalog.getUuid()).isNotNull();
+    	assertThat(fileCatalog.getUrl()).isEqualTo(applicationProperties.getLocalWebServerUrl()+"\\"+file.getName());
     }	
     
     
