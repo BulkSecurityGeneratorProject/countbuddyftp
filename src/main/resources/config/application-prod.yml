@@ -24,7 +24,7 @@ eureka:
         prefer-ip-address: true
     client:
         service-url:
-            defaultZone: http://admin:${jhipster.registry.password}@localhost:8761/eureka/
+            defaultZone: http://admin:admin@ec2-3-15-135-106.us-east-2.compute.amazonaws.com:8761/eureka
 
 spring:
     devtools:
@@ -150,12 +150,12 @@ jhipster:
 # ===================================================================
 
 application:
-    ftpDirectory: c:\publicDirectoryprod
+    ftpDirectory: /home/ubuntu/Documents/ftpdirectory
     passiveAddress: ec2-18-224-251-88.us-east-2.compute.amazonaws.com
-    passiveExternalAddress: countbuddy.mastertek.com.tr
+    passiveExternalAddress: 3.137.38.227
     passivePorts: 10000-11000
-    passowordFile: c:\publicDirectory\myftpusers.properties
-    ftpPort: 21121
+    passowordFile: /home/ubuntu/Documents/myftpusers.properties
+    ftpPort: 21
     ftpDefaultUser: countbuddyFtp
     ftpDefaultPassord: 105957Grk.
     environment: prod

@@ -8,4 +8,4 @@ application_ftpDirectory=/home/ramazan/publicDirectory
 application_passowordFile=/home/ramazan/myftpusers.properties
 application_ftpPort=21
 SERVER_PORT=9096
-sudo java -jar ftpcountbuddy-0.0.1-SNAPSHOT.war --server.port=$SERVER_PORT --application.ftpPort=$application_ftpPort --application.ftpDirectory=$application_ftpDirectory --application.passowordFile=$application_passowordFile --spring.profiles.active=$SPRING_PROFILES_ACTIVE --spring.cloud.config.url=$SPRING_CLOUD_CONFIG_URI --eureka.client.service.url.defaultzone=$EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE
+sudo java -jar -Xmx2048m ftpcountbuddy-0.0.1-SNAPSHOT.war --server.port=$SERVER_PORT --application.ftpPort=$application_ftpPort --application.ftpDirectory=$application_ftpDirectory --application.passowordFile=$application_passowordFile --spring.profiles.active=$SPRING_PROFILES_ACTIVE --spring.cloud.config.url=$SPRING_CLOUD_CONFIG_URI --eureka.client.service.url.defaultzone=$EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE

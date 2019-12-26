@@ -113,7 +113,7 @@ public void init() throws FtpException, IOException {
 	 
 	
 	  server.start();
-	  System.out.println("ftp server calisti");
+	  System.out.println("ftp server calisti.port:"+applicationProperties.getFtpPort());
 }
 
 
