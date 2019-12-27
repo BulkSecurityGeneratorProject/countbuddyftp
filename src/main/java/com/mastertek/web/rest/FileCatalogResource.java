@@ -6,6 +6,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import javax.validation.Valid;
 
@@ -33,6 +36,7 @@ import com.mastertek.repository.FileCatalogRepository;
 import com.mastertek.service.DatabaseService;
 import com.mastertek.web.rest.errors.BadRequestAlertException;
 import com.mastertek.web.rest.util.CountBuddyUtil;
+import com.mastertek.web.rest.util.FtpWorkerThread;
 import com.mastertek.web.rest.util.HeaderUtil;
 import com.mastertek.web.rest.util.PaginationUtil;
 
@@ -175,8 +179,57 @@ public class FileCatalogResource {
 		for (int i = 0; i < files.length; i++) {
 			File file = files[i];
 			Thread.currentThread().sleep(30);
-			CountBuddyUtil.sendFtpFile("localhost", applicationProperties.getFtpPort().intValue(), file, applicationProperties.getFtpDefaultUser(), applicationProperties.getFtpDefaultPassord());
+			CountBuddyUtil.sendFtpFile("3.137.38.227", applicationProperties.getFtpPort().intValue(), file, applicationProperties.getFtpDefaultUser(), applicationProperties.getFtpDefaultPassord());
 		}
+		
+		long count = fileCatalogRepository.count();
+		if(count!=files.length)
+			throw new RuntimeException("fileCatalog size not true");
+    	
+    	BigInteger recordCount = databaseService.getRecordCount();
+    	if(recordCount.longValue()!=1429)
+			throw new RuntimeException("record size not true");
+    	
+    	
+    	int processedListSize =fileCatalogRepository.findByProcessedStatus(false).size();
+    	if(processedListSize>0)
+			throw new RuntimeException("processed size not true");
+    
+    	
+    	System.out.println("bitti");
+    	
+    }
+    
+    @GetMapping("/file-catalogs/performanceTestMultiThread")
+    @Timed
+    //çalışma öncesi cache temizlenmelidir.
+    public void performanceTestMultiThread() throws Exception {
+    	
+    	if(!applicationProperties.getEnvironment().equals("dev")) {
+    		throw new RuntimeException("this method can be used only dev environment");
+    	}
+    	
+    	databaseService.prepareDatabaseForTest();
+    	fileCatalogRepository.deleteAll();
+    	FileUtils.cleanDirectory(new File(applicationProperties.getFtpDirectory()));
+    	
+    	String path4= applicationProperties.getPerformanceTestDataPath();
+
+		File[] files = CountBuddyUtil.getFileList(path4);
+		ExecutorService executor = Executors.newFixedThreadPool(20);
+		long countTemp = 0;
+		for (int i = 0; i < files.length; i++) {
+			File file = files[i];
+			Thread.currentThread().sleep(5);
+			Runnable worker = new FtpWorkerThread(files[i],"localhost",applicationProperties.getFtpPort().intValue(),applicationProperties.getFtpDefaultUser(),applicationProperties.getFtpDefaultPassord(),i);
+			executor.execute(worker);
+			countTemp++;
+			System.out.println("i-->" + i + ",count-->" + countTemp);
+
+		}
+		
+		executor.shutdown();
+		executor.awaitTermination(30, TimeUnit.SECONDS);
 		
 		long count = fileCatalogRepository.count();
 		if(count!=files.length)

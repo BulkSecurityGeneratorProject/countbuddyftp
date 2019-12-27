@@ -84,7 +84,7 @@ public class FtpTest {
 			if (i >= files.length)
 				continue;
 
-			Runnable worker = new FtpWorkerThread(files[i],applicationProperties.getFtpPort().intValue(),applicationProperties.getFtpDefaultUser(),applicationProperties.getFtpDefaultPassord(),i);
+			Runnable worker = new FtpWorkerThread(files[i],"localhost",applicationProperties.getFtpPort().intValue(),applicationProperties.getFtpDefaultUser(),applicationProperties.getFtpDefaultPassord(),i);
 			executor.execute(worker);
 			count++;
 			System.out.println("i-->" + i + ",count-->" + count);
