@@ -27,6 +27,9 @@ eureka:
             defaultZone: http://admin:admin@ec2-3-15-135-106.us-east-2.compute.amazonaws.com:8761/eureka
 
 spring:
+    profiles:
+        active: prod
+        include: swagger,no-liquibase
     devtools:
         restart:
             enabled: false
@@ -150,14 +153,14 @@ jhipster:
 # ===================================================================
 
 application:
-    ftpDirectory: /home/ubuntu/Documents/ftpdirectory
+    ftpDirectory: /ftpdirectory
     passiveAddress: ec2-18-224-251-88.us-east-2.compute.amazonaws.com
-    passiveExternalAddress: 3.137.38.227
+    passiveExternalAddress: ftpserver2.mastertek.com.tr
     passivePorts: 10000-11000
-    passowordFile: /home/ubuntu/Documents/myftpusers.properties
+    passowordFile: /myftpusers.properties
     ftpPort: 21
     ftpDefaultUser: countbuddyFtp
     ftpDefaultPassord: 105957Grk.
     environment: prod
-    localWebServerUrl: http://3.137.38.227:8000/ftpdirectory
+    localWebServerUrl: http://ec2-3-137-38-227.us-east-2.compute.amazonaws.com:8000
     notifyUrl: http://countbuddy.mastertek.com.tr:9990/api/records/processImage

@@ -105,6 +105,7 @@ public void init() throws FtpException, IOException {
 	 
 	  serverFactory.addListener("default", listener);
 	
+	  System.out.println("passive external address:"+applicationProperties.getPassiveAddress());
 	  
 	  server = serverFactory.createServer();
 	  ConnectionConfig connectionConfig = new DefaultConnectionConfig(true,500,600,10,3,1000);

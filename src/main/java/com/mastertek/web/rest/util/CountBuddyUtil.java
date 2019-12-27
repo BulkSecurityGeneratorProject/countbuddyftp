@@ -16,12 +16,12 @@ import org.apache.commons.net.ftp.FTPReply;
 
 public class CountBuddyUtil {
 	
-	public static Boolean sendFtpFile(String localhost,int port,File file,String username,String password) throws Exception {
+	public static Boolean sendFtpFile(String host,int port,File file,String username,String password) throws Exception {
     	FTPClient ftp = null;
     	ftp = new FTPClient();
 		ftp.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
 		int reply;
-		ftp.connect("localhost",port);
+		ftp.connect(host,port);
 		reply = ftp.getReplyCode();
 		if (!FTPReply.isPositiveCompletion(reply)) {
 			ftp.disconnect();
