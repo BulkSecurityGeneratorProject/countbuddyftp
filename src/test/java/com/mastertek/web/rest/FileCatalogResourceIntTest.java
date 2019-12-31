@@ -1,15 +1,32 @@
 package com.mastertek.web.rest;
 
-import com.mastertek.FtpcountbuddyApp;
-import com.mastertek.config.ApplicationProperties;
-import com.mastertek.domain.FileCatalog;
-import com.mastertek.repository.FileCatalogRepository;
-import com.mastertek.service.DatabaseService;
-import com.mastertek.web.rest.errors.ExceptionTranslator;
+import static com.mastertek.web.rest.TestUtil.createFormattingConversionService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.File;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+
+import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,16 +38,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-
-import static com.mastertek.web.rest.TestUtil.createFormattingConversionService;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import com.mastertek.FtpcountbuddyApp;
+import com.mastertek.config.ApplicationProperties;
+import com.mastertek.domain.FileCatalog;
+import com.mastertek.repository.FileCatalogRepository;
+import com.mastertek.service.DatabaseService;
+import com.mastertek.service.FileCatalogService;
+import com.mastertek.web.rest.errors.ExceptionTranslator;
 
 /**
  * Test class for the FileCatalogResource REST controller.
@@ -87,15 +101,29 @@ public class FileCatalogResourceIntTest {
     @Autowired
     DatabaseService databaseService;
 
+    @Autowired
+    FileCatalogService fileCatalogService;
+    
+    @Mock
+    DatabaseService databaseService2;
+    
+    List mockData = new ArrayList();
+   
+        
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final FileCatalogResource fileCatalogResource = new FileCatalogResource(fileCatalogRepository,applicationProperties,databaseService);
+        fileCatalogService = new FileCatalogService(fileCatalogRepository, applicationProperties, databaseService2) ;
+        final FileCatalogResource fileCatalogResource = new FileCatalogResource(fileCatalogRepository,applicationProperties,databaseService,fileCatalogService);
         this.restFileCatalogMockMvc = MockMvcBuilders.standaloneSetup(fileCatalogResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
             .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
+        
+        
+        when(databaseService2.findFilesForDelete()).thenReturn(mockData);
+        //fileCatalogRepository.deleteAll();
     }
 
     /**
@@ -317,4 +345,40 @@ public class FileCatalogResourceIntTest {
         fileCatalog1.setId(null);
         assertThat(fileCatalog1).isNotEqualTo(fileCatalog2);
     }
+    @Test
+    //@Transactional
+    public void deleteFiles() throws IOException, InterruptedException {
+    	
+    	
+    	ClassLoader classLoader = getClass().getClassLoader();
+    	File file = new File(classLoader.getResource("Face_733935_19121_1557049797506.jpg").getFile());
+    	//File tempFile = new File( System.getProperty("user.dir")+"\\Face_733935_42839_1566849042090.jpg");
+    	//File tempFile = File.createTempFile("Face_733935_19121_1557049797506", ".png");
+    	String tDir = System.getProperty("java.io.tmpdir");
+    	File tempFile=new File(tDir+"\\Face_733935_19121_1557049797506.png");
+    	if (tempFile.exists()) {
+    		tempFile.delete();
+    	}
+    	
+    	tempFile.createNewFile();
+    	FileUtils.copyFile(file, tempFile);
+    	assertThat(tempFile.exists()).isTrue();
+    	
+    	FileCatalog fileCatalog = new FileCatalog();
+    	fileCatalog.setDeleted(false);
+    	fileCatalog.setDeviceId("733935");
+    	fileCatalog.setPath(tempFile.getAbsolutePath());
+    	fileCatalogRepository.save(fileCatalog);
+    	mockData.add(new BigInteger(fileCatalog.getId().toString()));
+    	
+    	
+    	fileCatalogService.deleteFiles();
+    	fileCatalog = fileCatalogRepository.findOne(fileCatalog.getId());
+    	
+    	Thread.currentThread().sleep(1000);
+    	//assertThat(fileCatalog.isDeleted()).isTrue();
+    	assertThat(tempFile.exists()).isFalse();
+
+    }
+
 }

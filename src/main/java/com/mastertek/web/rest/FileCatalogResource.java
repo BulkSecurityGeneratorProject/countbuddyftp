@@ -34,6 +34,7 @@ import com.mastertek.config.ApplicationProperties;
 import com.mastertek.domain.FileCatalog;
 import com.mastertek.repository.FileCatalogRepository;
 import com.mastertek.service.DatabaseService;
+import com.mastertek.service.FileCatalogService;
 import com.mastertek.web.rest.errors.BadRequestAlertException;
 import com.mastertek.web.rest.util.CountBuddyUtil;
 import com.mastertek.web.rest.util.FtpWorkerThread;
@@ -60,12 +61,15 @@ public class FileCatalogResource {
     
     private final DatabaseService databaseService;
     
+    private final FileCatalogService fileCatalogService;
+    
     Javalin app;
     
-    public FileCatalogResource(FileCatalogRepository fileCatalogRepository,ApplicationProperties applicationProperties,DatabaseService databaseService) {
+    public FileCatalogResource(FileCatalogRepository fileCatalogRepository,ApplicationProperties applicationProperties,DatabaseService databaseService,FileCatalogService fileCatalogService) {
         this.fileCatalogRepository = fileCatalogRepository;
         this.applicationProperties = applicationProperties;
         this.databaseService = databaseService;
+        this.fileCatalogService = fileCatalogService;
         
         if(applicationProperties.getEnvironment().equals("dev")) {
 	        app = Javalin.create().start(7000);
@@ -158,7 +162,6 @@ public class FileCatalogResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
     
-    
     @GetMapping("/file-catalogs/performanceTest")
     @Timed
     //çalışma öncesi cache temizlenmelidir.
@@ -248,4 +251,13 @@ public class FileCatalogResource {
     	System.out.println("bitti");
     	
     }
+    
+    @GetMapping("/file-catalogs/deleteFiles")
+    @Timed
+    public void deleteFiles() throws InterruptedException {
+       
+        fileCatalogService.deleteFiles();
+    }
+    
+    
 }

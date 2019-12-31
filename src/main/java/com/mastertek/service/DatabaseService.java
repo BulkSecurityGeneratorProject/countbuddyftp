@@ -37,4 +37,25 @@ public class DatabaseService {
        
         
 	}
+	   
+	@Transactional
+	public List findFilesForDelete() {
+		Query query;
+
+		String sql = "select id from file_catalog where  deleted = 0 and device_id in(  \r\n" + 
+				"select device_id from device d\r\n" + 
+				"join location l on l.id = d.location_id\r\n" + 
+				"join floor f on f.id = l.floor_id\r\n" + 
+				"join store s on s.id = f.store_id\r\n" + 
+				"where s.delete_images = 0\r\n" + 
+				") limit 100000";
+		query = entityManager.createNativeQuery(sql);
+		
+		List result = query.getResultList();
+		
+		return result;
+
+	} 
+
+	
 }
