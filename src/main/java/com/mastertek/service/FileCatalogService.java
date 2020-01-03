@@ -38,7 +38,7 @@ public class FileCatalogService {
 	
 	}
     
-    @Scheduled(cron = "0 0 4 * * ?") //This is scheduled to get fired everyday, at 01:00 (am).
+    //@Scheduled(cron = "0 0 4 * * ?") //This is scheduled to get fired everyday, at 01:00 (am).
     //@Transactional(propagation = Propagation.REQUIRES_NEW)
     public void deleteFiles() throws InterruptedException {
     	
