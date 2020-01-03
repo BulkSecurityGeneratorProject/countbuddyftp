@@ -47,7 +47,7 @@ public class DatabaseService {
 				"join location l on l.id = d.location_id\r\n" + 
 				"join floor f on f.id = l.floor_id\r\n" + 
 				"join store s on s.id = f.store_id\r\n" + 
-				"where s.delete_images = 0\r\n" + 
+				"where s.delete_images = 1\r\n" + 
 				") limit 100000";
 		query = entityManager.createNativeQuery(sql);
 		
