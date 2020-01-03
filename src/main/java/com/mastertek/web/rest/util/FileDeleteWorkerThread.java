@@ -27,11 +27,10 @@ public class FileDeleteWorkerThread implements Runnable{
 	   
 		public void run() {  fileCatalogRepository.findAll();
 			log.info("file_will_be_deleted.ID:"+fileCatalogId);
-	    	//FileCatalog fileCatalog = fileCatalogRepository.findOne(fileCatalogId.longValue()); 
-	    	//String path = databaseService.findPathOfFileCatalog(fileCatalogId.longValue());
+	    	
 			FileCatalog fileCatalog = fileCatalogRepository.findOne(fileCatalogId.longValue());
-			String path = fileCatalog.getPath();fileCatalogRepository.findAll();
-	    	File file = new File(path);
+			String path = fileCatalog.getPath();
+			File file = new File(path);
 	    	if(file.exists()) {
 	    		boolean result = file.delete();
 	    		if(result)
@@ -41,7 +40,6 @@ public class FileDeleteWorkerThread implements Runnable{
 	    	}
 	    	fileCatalog.setDeleted(true);
 	    	fileCatalogRepository.save(fileCatalog);
-	    	//databaseService.updateFileDeletedAttribute(fileCatalogId.longValue());
 	    	log.info("file_deleted.ID:"+fileCatalogId);
 		}
 }

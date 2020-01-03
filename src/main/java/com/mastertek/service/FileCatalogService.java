@@ -43,8 +43,7 @@ public class FileCatalogService {
     public void deleteFiles() throws InterruptedException {
     	
     	log.info("Delete_Files started");
-    	fileCatalogRepository.findAll()
-    	;
+    	
     	List list = databaseService.findFilesForDelete();
     	ExecutorService executor = Executors.newFixedThreadPool(20);
 		long countTemp = 0;
@@ -54,7 +53,7 @@ public class FileCatalogService {
 			FileDeleteWorkerThread worker = new FileDeleteWorkerThread(databaseService,fileCatalogRepository,object);
 			executor.execute(worker);
 			countTemp++;
-			System.out.println("i-->" + i + ",count-->" + countTemp);
+			System.out.println("Delele files thread -->" + i + ",count-->" + countTemp);
 
 		}
 		
