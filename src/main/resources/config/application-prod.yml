@@ -155,12 +155,12 @@ jhipster:
 application:
     ftpDirectory: /ftpdirectory
     passiveAddress: ec2-18-224-251-88.us-east-2.compute.amazonaws.com
-    passiveExternalAddress: ftpserver2.mastertek.com.tr
+    passiveExternalAddress: ftpserver1.mastertek.com.tr
     passivePorts: 10000-11000
     passowordFile: /myftpusers.properties
     ftpPort: 21
     ftpDefaultUser: countbuddyFtp
     ftpDefaultPassord: 105957Grk.
     environment: prod
-    localWebServerUrl: http://ec2-3-137-38-227.us-east-2.compute.amazonaws.com:8000
+    localWebServerUrl: http://ftpserver1.mastertek.com.tr:8080
     notifyUrl: http://countbuddy.mastertek.com.tr:9990/api/records/processImage
