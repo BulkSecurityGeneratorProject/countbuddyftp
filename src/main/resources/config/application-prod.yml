@@ -163,4 +163,4 @@ application:
     ftpDefaultPassord: 105957Grk.
     environment: prod
     localWebServerUrl: http://ftpserver1.mastertek.com.tr:8080
-    notifyUrl: http://countbuddy.mastertek.com.tr:9990/api/records/processImage
+    notifyUrl: http://countbuddy.mastertek.com.tr:9095/api/records/processImage
