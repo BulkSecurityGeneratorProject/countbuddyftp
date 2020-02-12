@@ -38,13 +38,13 @@ public class FileCatalogService {
 	
 	}
     
-    //@Scheduled(cron = "0 0 4 * * ?") //This is scheduled to get fired everyday, at 01:00 (am).
-    //@Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Scheduled(cron = "0 0/15 * * * ?") //This is scheduled to get fired everyday, at 01:00 (am).
     public void deleteFiles() throws InterruptedException {
     	
     	log.info("Delete_Files started");
     	
     	List list = databaseService.findFilesForDelete();
+    	log.info("Delete_Files "+list.size() +" silinecek.");
     	ExecutorService executor = Executors.newFixedThreadPool(20);
 		long countTemp = 0;
 		for (int i = 0; i < list.size(); i++) {
@@ -60,9 +60,8 @@ public class FileCatalogService {
 		executor.shutdown();
 		executor.awaitTermination(30, TimeUnit.SECONDS);
 
-		
-		
-		log.info("Delete_Files finished");
+		List list2 = databaseService.findFilesForDelete();
+		log.info("Delete_Files finished."+list2.size()+" dosya kaldı");
     	
     }
     

@@ -9,3 +9,10 @@ application_passowordFile=/home/ubuntu/myftpusers.properties
 application_ftpPort=21
 SERVER_PORT=8086
 sudo java -jar -Xmx16048m /home/ubuntu/Documents/versions/ftpcountbuddy-0.0.1-SNAPSHOT.war --spring.profiles.active=$SPRING_PROFILES_ACTIVE
+
+
+
+
+
+--to run warfile..
+nohup sudo ./countbuddyFtp.sh &
