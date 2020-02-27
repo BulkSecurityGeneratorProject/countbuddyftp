@@ -25,7 +25,7 @@ public class FileDeleteWorkerThread implements Runnable{
 	    	this.databaseService = databaseService;
 	    }  
 	   
-		public void run() {  fileCatalogRepository.findAll();
+		public void run() {  
 			log.info("file_will_be_deleted.ID:"+fileCatalogId);
 	    	
 			FileCatalog fileCatalog = fileCatalogRepository.findOne(fileCatalogId.longValue());
