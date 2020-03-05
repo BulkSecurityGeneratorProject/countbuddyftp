@@ -16,3 +16,9 @@ sudo java -jar -Xmx16048m /home/ubuntu/Documents/versions/ftpcountbuddy-0.0.1-SN
 
 --to run warfile..
 nohup sudo ./countbuddyFtp.sh &
+
+sudo apt-get update -y
+sudo apt-get install -y webfs
+sudo nano /etc/webfsd.conf
+set path and port
+sudo /etc/init.d/webfs restart
