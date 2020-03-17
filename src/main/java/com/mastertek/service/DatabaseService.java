@@ -42,7 +42,7 @@ public class DatabaseService {
 	public List findFilesForDelete() {
 		Query query;
 
-		String sql = "select id from file_catalog where  deleted = 0 and device_id in(  \r\n" + 
+		String sql = "select id from file_catalog where  deleted = 0 and processed= 1 and device_id in(  \r\n" + 
 				"select device_id from device d\r\n" + 
 				"join location l on l.id = d.location_id\r\n" + 
 				"join floor f on f.id = l.floor_id\r\n" + 

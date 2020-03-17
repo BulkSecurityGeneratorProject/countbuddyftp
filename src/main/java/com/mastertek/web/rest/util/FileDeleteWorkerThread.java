@@ -29,12 +29,12 @@ public class FileDeleteWorkerThread implements Runnable{
 			log.info("file_will_be_deleted.ID:"+fileCatalogId);
 	    	
 			FileCatalog fileCatalog = fileCatalogRepository.findOne(fileCatalogId.longValue());
-			String path = fileCatalog.getPath();
+			String path = fileCatalog.getPath().replace("\\", "/");
 			File file = new File(path);
 	    	if(file.exists()) {
 	    		boolean result = file.delete();
 	    		if(result)
-	    			log.info(file.getAbsolutePath() + "deleted");
+	    			log.info(file.getAbsolutePath() + " deleted");
 	    		else
 	    			log.info(file.getAbsolutePath() + " cant deleted");
 	    	}
