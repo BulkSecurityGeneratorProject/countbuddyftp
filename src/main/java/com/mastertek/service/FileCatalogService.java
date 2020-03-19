@@ -74,7 +74,7 @@ public class FileCatalogService {
     	
     }
     
-    @Scheduled(cron = "0 4 * * * ?") //This is scheduled to get fired everyday, at 01:00 (am).
+   // @Scheduled(cron = "0 4 * * * ?") //This is scheduled to get fired everyday, at 01:00 (am).
     public void findUnprocessedFilesFromDisk() throws Exception {
     	
     	log.info("findUnprocessedFiles started");
