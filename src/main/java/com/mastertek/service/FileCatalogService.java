@@ -1,20 +1,26 @@
 package com.mastertek.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigInteger;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.http.client.ClientProtocolException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mastertek.config.ApplicationProperties;
+import com.mastertek.domain.FileCatalog;
 import com.mastertek.repository.FileCatalogRepository;
+import com.mastertek.web.rest.util.CountBuddyUtil;
 import com.mastertek.web.rest.util.FileDeleteWorkerThread;
 
 @Service
@@ -28,14 +34,17 @@ public class FileCatalogService {
     private final ApplicationProperties applicationProperties; 
     
     private final DatabaseService databaseService; 
+
+    private final NotifyService notifyService; 
     
-    public FileCatalogService(FileCatalogRepository fileCatalogRepository,ApplicationProperties applicationProperties,DatabaseService databaseService
+    public FileCatalogService(FileCatalogRepository fileCatalogRepository,ApplicationProperties applicationProperties,
+    		DatabaseService databaseService,NotifyService notifyService
     		) {
 		super();
 		this.fileCatalogRepository = fileCatalogRepository;
 		this.applicationProperties = applicationProperties;
 		this.databaseService = databaseService;
-	
+		this.notifyService = notifyService;
 	}
     
     @Scheduled(cron = "0 0/15 * * * ?") //This is scheduled to get fired everyday, at 01:00 (am).
@@ -65,5 +74,31 @@ public class FileCatalogService {
     	
     }
     
+    @Scheduled(cron = "0 4 * * * ?") //This is scheduled to get fired everyday, at 01:00 (am).
+    public void findUnprocessedFilesFromDisk() throws Exception {
+    	
+    	log.info("findUnprocessedFiles started");
+    	
+    	Collection<File> fileList = CountBuddyUtil.listFileTree(new File(applicationProperties.getFtpDirectory()));
+    	log.info("findUnprocessedFiles "+fileList.size() +" işlenecek.");
+    	
+    	List deviceIdList = databaseService.getDeviceListofStoreWhichDeletedActivated();
+    	
+    	Long count=0l;
+    	for (Iterator iterator = fileList.iterator(); iterator.hasNext();) {
+			File file = (File) iterator.next();
+			if(!file.getAbsolutePath().contains("jpg"))
+				continue;
+			String deviceId = CountBuddyUtil.getDeviceId(file.getAbsolutePath());
+			if(deviceIdList.contains(deviceId)) {
+			 	FileCatalog fileCatalog= notifyService.createFileCatalog(file.getAbsolutePath());
+				notifyService.notifyBackendApp(fileCatalog);
+				count++;
+			}
+		}
+   	
+		log.info("findUnprocessedFiles tamamlandı. "+count+ " dosya işlendi" );
+    	
+    }
     
 }

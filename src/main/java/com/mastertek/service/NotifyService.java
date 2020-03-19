@@ -46,7 +46,7 @@ public class NotifyService {
     	
 		FileCatalog fileCatalog = new FileCatalog();
     	fileCatalog.setUuid(uuid);
-    	fileCatalog.setDeviceId(getDeviceId(path));
+    	fileCatalog.setDeviceId(CountBuddyUtil.getDeviceId(path));
     	fileCatalog.setInsert(Instant.now());
     	fileCatalog.setPath(path);
     	fileCatalog.setProcessed(false);
@@ -122,15 +122,5 @@ public class NotifyService {
 		return fileCatalogRepository;
 	}
 	
-	public static String getDeviceId(String path) {
-		try {
-			File file =  new File(path);
-			String name = file.getName();
-			String[] arg = name.split("_");
-			return arg[1];
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			return "";
-		}
-	}
+	
 }

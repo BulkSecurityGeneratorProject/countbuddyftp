@@ -7,7 +7,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.net.PrintCommandListener;
 import org.apache.commons.net.ftp.FTP;
@@ -71,4 +74,28 @@ public class CountBuddyUtil {
 		 result = result.replace("\\", "/");
 		 return result;
 	 }
+	 
+	 public static Collection<File> listFileTree(File dir) {
+		    Set<File> fileTree = new HashSet<File>();
+		    if(dir==null||dir.listFiles()==null){
+		        return fileTree;
+		    }
+		    for (File entry : dir.listFiles()) {
+		        if (entry.isFile()) fileTree.add(entry);
+		        else fileTree.addAll(listFileTree(entry));
+		    }
+		    return fileTree;
+		}
+	 
+	 public static String getDeviceId(String path) {
+			try {
+				File file =  new File(path);
+				String name = file.getName();
+				String[] arg = name.split("_");
+				return arg[1];
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				return "";
+			}
+		}
 }

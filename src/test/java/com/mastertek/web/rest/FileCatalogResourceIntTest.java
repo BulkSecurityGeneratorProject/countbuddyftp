@@ -44,7 +44,9 @@ import com.mastertek.domain.FileCatalog;
 import com.mastertek.repository.FileCatalogRepository;
 import com.mastertek.service.DatabaseService;
 import com.mastertek.service.FileCatalogService;
+import com.mastertek.service.NotifyService;
 import com.mastertek.web.rest.errors.ExceptionTranslator;
+import com.mastertek.web.rest.util.CountBuddyUtil;
 
 /**
  * Test class for the FileCatalogResource REST controller.
@@ -103,17 +105,20 @@ public class FileCatalogResourceIntTest {
 
     @Autowired
     FileCatalogService fileCatalogService;
+
+    @Autowired
+    NotifyService notifyService;
     
     @Mock
     DatabaseService databaseService2;
     
     List mockData = new ArrayList();
-   
+    List mockData2 = new ArrayList();
         
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        fileCatalogService = new FileCatalogService(fileCatalogRepository, applicationProperties, databaseService2) ;
+        fileCatalogService = new FileCatalogService(fileCatalogRepository, applicationProperties, databaseService2,notifyService) ;
         final FileCatalogResource fileCatalogResource = new FileCatalogResource(fileCatalogRepository,applicationProperties,databaseService,fileCatalogService);
         this.restFileCatalogMockMvc = MockMvcBuilders.standaloneSetup(fileCatalogResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
@@ -121,8 +126,10 @@ public class FileCatalogResourceIntTest {
             .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
         
-        
+        mockData2.add("733935");
         when(databaseService2.findFilesForDelete()).thenReturn(mockData);
+        when(databaseService2.getDeviceListofStoreWhichDeletedActivated()).thenReturn(mockData2);
+        
         //fileCatalogRepository.deleteAll();
     }
 
@@ -381,4 +388,27 @@ public class FileCatalogResourceIntTest {
 
     }
 
+    @Test
+    //@Transactional
+    public void findUnprocessedFilesFromDisk() throws Exception {
+    	
+    	// send file to ftp directory
+    	ClassLoader classLoader = getClass().getClassLoader();
+    	FileUtils.cleanDirectory(new File(applicationProperties.getFtpDirectory()));
+    	File file = new File(classLoader.getResource("Face_733935_19121_1557049797506.jpg").getFile());
+    	CountBuddyUtil.sendFtpFile("localhost", applicationProperties.getFtpPort().intValue(), file,applicationProperties.getFtpDefaultUser(),applicationProperties.getFtpDefaultPassord());
+    	
+    	//delete record for testing...
+    	fileCatalogRepository.deleteAll();
+    	List<FileCatalog> list = fileCatalogRepository.findAll();
+        assertThat(list.size()).isEqualTo(0);
+
+    	
+    	fileCatalogService.findUnprocessedFilesFromDisk();
+    	
+    	list = fileCatalogRepository.findAll();
+    	assertThat(list.size()).isEqualTo(1);
+
+    }
+    
 }
