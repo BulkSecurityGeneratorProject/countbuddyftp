@@ -1,6 +1,7 @@
 package com.mastertek.service;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -50,17 +51,21 @@ public class NotifyFtplet extends DefaultFtplet {
 			path = readDirectory+session.getFileSystemView().getWorkingDirectory().getAbsolutePath().replaceAll("//", "\\") + "\\"+ request.getArgument();
 		
 		try {
-			uuid = UUID.randomUUID().toString();
 			log.info(request.getArgument() +" ftp  start");
-	       
+			File file = new File(path);
+			if(!file.exists() || file.length()==0) {
+				throw new RuntimeException("file_not_found:"+path);
+			}
+			uuid = UUID.randomUUID().toString();
 			FileCatalog fileCatalog= notifyService.createFileCatalog(path);
 			notifyService.notifyBackendApp(fileCatalog);
 		
 			log.info(request.getArgument() +" ftp  finish");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			log.error("file_not_found",e);
 			e.printStackTrace();
-			notifyService.notifyBackendApp(uuid,path);
+			//notifyService.notifyBackendApp(uuid,path);
 		}
 		return FtpletResult.DEFAULT;
     }
