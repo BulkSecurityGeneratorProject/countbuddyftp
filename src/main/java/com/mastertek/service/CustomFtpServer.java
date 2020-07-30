@@ -57,8 +57,12 @@ public void init() throws FtpException, IOException {
 		ftpDirectory.mkdir();
 		log.info(applicationProperties.getFtpDirectory() +" oluşturuldu");
 	}
-	log.info(applicationProperties.getFtpDirectory() +" ftp dizini olarak kullanılıyor");
-
+	log.info("parameter_ftp_directory:"+applicationProperties.getFtpDirectory());
+	log.info("parameter_local_web_url:"+applicationProperties.getLocalWebServerUrl());
+	log.info("parameter_passive_address:"+applicationProperties.getPassiveAddress());
+	log.info("parameter_passive_external_address:"+applicationProperties.getPassiveExternalAddress());
+	log.info("parameter_server_name:"+applicationProperties.getServerName());
+	log.info("parameter_notify_url:"+applicationProperties.getNotifyUrl());
 	
 	File passwordFile = new File(applicationProperties.getPassowordFile());
 	if(!passwordFile.exists()) {

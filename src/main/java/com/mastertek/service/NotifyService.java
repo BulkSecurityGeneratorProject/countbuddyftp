@@ -46,6 +46,7 @@ public class NotifyService {
     	
 		FileCatalog fileCatalog = new FileCatalog();
     	fileCatalog.setUuid(uuid);
+    	fileCatalog.setServerName(applicationProperties.getServerName());
     	fileCatalog.setDeviceId(CountBuddyUtil.getDeviceId(path));
     	fileCatalog.setInsert(Instant.now());
     	fileCatalog.setPath(path);
@@ -69,19 +70,23 @@ public class NotifyService {
 		
     	String url = applicationProperties.getNotifyUrl();
     	String parameters = "?";
-    	parameters = parameters+"path="+URLEncoder.encode(fileCatalog.getUrl(), "UTF-8")+"&";
+    	parameters = parameters+"path="+URLEncoder.encode(fileCatalog.getPath(), "UTF-8")+"&";
     	parameters = parameters+"uuid="+fileCatalog.getUuid()+"&";
-    	parameters = parameters+"fileCatalogId="+fileCatalog.getId();
-		
-		log.info(fileCatalog.getUuid()+" notify ediliyor.");
+    	parameters = parameters+"fileCatalogId="+fileCatalog.getId()+"&";
+    	parameters = parameters+"serverName="+fileCatalog.getServerName()+"&";
+    	parameters = parameters+"url="+URLEncoder.encode(fileCatalog.getUrl(), "UTF-8");
+    	
+		log.info(fileCatalog.getUuid()+" notify_ediliyor.");
 		
 		//String encoded = URLEncoder.encode(parameters, "UTF-8");
 		HttpGet httpPost = new HttpGet(url+parameters);
 		String result = sendRequest(httpPost);
 		
-		log.info(fileCatalog.getUuid()+" notify tamamlandı.");
+		log.info(url+parameters+" notify_url");
+		log.info(fileCatalog.getUuid()+" notify_tamamlandı.");
 	}
 	
+   /*
     @Async
 	public void notifyBackendApp(String uuid,String path) throws ClientProtocolException, IOException {
     	if(applicationProperties.getEnvironment().equals("unittest"))
@@ -93,6 +98,7 @@ public class NotifyService {
     	parameters = parameters+"path="+URLEncoder.encode(fileUrl, "UTF-8")+"&";
     	parameters = parameters+"uuid="+uuid+"&";
     	parameters = parameters+"fileCatalogId="+0;
+    	parameters = parameters+"url="+fileUrl;
 		
 		log.info(uuid+" notify ediliyor.(Hata dolayısı ile fileCatalog iletilmedi)");
 		
@@ -102,7 +108,7 @@ public class NotifyService {
 		
 		log.info(uuid+" notify tamamlandı.(Hata dolayısı ile fileCatalog iletilmedi)");
 	}
-    
+    */
 	private String sendRequest(HttpUriRequest request) throws ClientProtocolException, IOException {
 		CloseableHttpClient client = HttpClients.createDefault();
 	    CloseableHttpResponse response = client.execute(request);

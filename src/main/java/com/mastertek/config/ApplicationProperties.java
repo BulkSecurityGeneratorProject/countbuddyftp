@@ -28,6 +28,8 @@ public class ApplicationProperties {
 	
 	String localWebServerUrl;
 	
+	String serverName;
+	
 	public String getFtpDirectory() {
 		return ftpDirectory;
 	}
@@ -99,6 +101,12 @@ public class ApplicationProperties {
 	}
 	public void setLocalWebServerUrl(String localWebServerUrl) {
 		this.localWebServerUrl = localWebServerUrl;
+	}
+	public String getServerName() {
+		return serverName;
+	}
+	public void setServerName(String serverName) {
+		this.serverName = serverName;
 	}
 	
 }

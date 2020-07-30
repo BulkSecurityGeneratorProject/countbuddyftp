@@ -49,6 +49,9 @@ public class FileCatalog implements Serializable {
     @Column(name = "url")
     private String url;
 
+    @Column(name = "server_name")
+    private String serverName;
+    
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -197,4 +200,12 @@ public class FileCatalog implements Serializable {
             ", url='" + getUrl() + "'" +
             "}";
     }
+
+	public String getServerName() {
+		return serverName;
+	}
+
+	public void setServerName(String serverName) {
+		this.serverName = serverName;
+	}
 }
