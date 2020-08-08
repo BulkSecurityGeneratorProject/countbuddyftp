@@ -45,13 +45,19 @@ public class NotifyFtplet extends DefaultFtplet {
 		
 		String path = "";
 		String uuid ="";
-		if(session.getFileSystemView().getWorkingDirectory().getAbsolutePath() == "/")
-			path = readDirectory+ "\\"+ request.getArgument();
-		else 
-			path = readDirectory+session.getFileSystemView().getWorkingDirectory().getAbsolutePath().replaceAll("//", "\\") + "\\"+ request.getArgument();
 		
+		//log.info(request.getArgument() +" request.getArgument()");
+		//log.info(readDirectory +" readDirectory");
+		//log.info(session.getFileSystemView().getWorkingDirectory().getAbsolutePath() +" getAbsolutePath");
+		//log.info(readDirectory+session.getFileSystemView().getWorkingDirectory().getAbsolutePath()+ "/"+ request.getArgument() +" path");
+		
+		if(session.getFileSystemView().getWorkingDirectory().getAbsolutePath() == "/")
+			path = readDirectory+ "/"+ request.getArgument();
+		else 
+			path = readDirectory+session.getFileSystemView().getWorkingDirectory().getAbsolutePath() + "/"+ request.getArgument();
+		 
 		try {
-			log.info(request.getArgument() +" ftp  start");
+			log.info(path +" ftp  start");
 			File file = new File(path);
 			if(!file.exists() || file.length()==0) {
 				throw new RuntimeException("file_not_found:"+path);

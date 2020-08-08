@@ -5,6 +5,6 @@
         .module('ftpcountbuddyApp')
         .constant('VERSION', "0.0.1-SNAPSHOT")
         .constant('DEBUG_INFO_ENABLED', false)
-        .constant('BUILD_TIMESTAMP', 1584477313300)
+        .constant('BUILD_TIMESTAMP', 1596476756747)
 ;
 })();
